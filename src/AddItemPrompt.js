@@ -12,7 +12,24 @@ const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
   const inputRef = useRef();
 
   const onSubmit = () => {
-    console.log(inputRef.current.value)
+    let enteredNum = -1;
+    try {
+      enteredNum = Number.parseInt(inputRef.current.value);
+    } catch (error) {
+      console.log("input is not a number");
+    }
+
+    if (enteredNum >= 0 && enteredNum <= 9999) {
+      const i = items.indexOf(enteredNum);
+      if (i === -1) { // if enteredNum is not in items
+        setItems(oldItems => [...oldItems, enteredNum]);
+        // sortListByGivenFilter()
+      } else {
+        console.log("entered number is already in list");
+      }
+    } else {
+      console.log("entered number is not between 1 and 9999");
+    }
   }
 
   return (
@@ -23,7 +40,7 @@ const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
         <DialogContentText>
           A number can be between 0 and 9999
         </DialogContentText>
-        <TextField inputRef={inputRef}/>
+        <TextField inputRef={inputRef} autoFocus/>
       </DialogContent>
       <DialogActions>
         <Button
@@ -34,10 +51,9 @@ const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
         <Button
           onClick={() => {
             onSubmit();
-            setShowing(false)
+            setShowing(false);
           }}
-          color="primary"
-          autoFocus>
+          color="primary">
           Submit
         </Button>
       </DialogActions>
