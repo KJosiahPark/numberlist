@@ -13,12 +13,13 @@ const App = () => {
   const [items, setItems] = useState(() =>
     unfold((n) => (n > 100 ? false : [n, n + 1]), 0)
   );
+  const [showingAddItem, setShowingAddItem] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ListCard items={items} setItems={setItems}/>
-      <AddItemPrompt items={items} setItems={setItems}/>
+      <ListCard items={items} setItems={setItems} setShowingAddItem={setShowingAddItem}/>
+      <AddItemPrompt showing={showingAddItem} setShowing={setShowingAddItem} items={items} setItems={setItems}/>
     </ThemeProvider>
   )
 };
