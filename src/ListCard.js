@@ -12,20 +12,47 @@ const ListCard = () => {
   const [items, setItems] = useState(() =>
     unfold((n) => (n > 100 ? false : [n, n + 1]), 0)
   );
+  const [selected, setSelected] = useState([]);
+
+  const handleCheck = item => {
+    setSelected(prevSelects => {
+      const i = prevSelects.indexOf(item);
+      // if item is not already selected
+      if (i === -1) {
+        // add item
+        return [...prevSelects, item];
+      } else {
+        // remove item
+        prevSelects[i] = prevSelects[prevSelects.length - 1];
+        prevSelects.pop();
+      }
+      return [...prevSelects];
+    });
+  };
+
+  const clearItem = toClear => {
+    setItems(prevItems => {
+      return prevItems.filter(item => toClear !== item);
+    })
+    setSelected(prevSelects => {
+      return prevSelects.filter(item => toClear !== item);
+    })
+  }
 
   return (
     <div>
       <TopBar />
       <Toolbar />
       <List>
-        {items.map((item, index) => (
+        {items.map(item => (
           <ListItem key={item} divider>
-            <Checkbox color="primary"/>
+            <Checkbox
+              checked={selected.includes(item)}
+              onChange={() => handleCheck(item)}
+              color="primary"/>
             <span style={{flex: 1}}>{item}</span>
-            <IconButton aria-label="delete">
-                <ClearIcon onClick={() => setItems((prevItems) => {
-                  return prevItems.filter((num) => item !== num);
-                })} />
+            <IconButton>
+                <ClearIcon onClick={() => clearItem(item)} />
             </IconButton>
           </ListItem>
         ))}
