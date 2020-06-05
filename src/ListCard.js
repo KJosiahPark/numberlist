@@ -3,15 +3,10 @@ import React, { useState } from "react";
 import { Toolbar, List, ListItem, Checkbox, IconButton } from "@material-ui/core";
 import ClearIcon from '@material-ui/icons/Clear';
 
-import { unfold } from "ramda";
-
 import "./ListCard.css";
 import TopBar from "./TopBar";
 
-const ListCard = () => {
-  const [items, setItems] = useState(() =>
-    unfold((n) => (n > 100 ? false : [n, n + 1]), 0)
-  );
+const ListCard = ({items, setItems}) => {
   const [selected, setSelected] = useState([]);
 
   const handleCheck = item => {
@@ -30,18 +25,21 @@ const ListCard = () => {
     });
   };
 
-  const clearItem = toClear => {
+  const deleteItem = toDelete => {
     setItems(prevItems => {
-      return prevItems.filter(item => toClear !== item);
+      return prevItems.filter(item => toDelete !== item);
     })
     setSelected(prevSelects => {
-      return prevSelects.filter(item => toClear !== item);
+      return prevSelects.filter(item => toDelete !== item);
     })
   }
 
   return (
     <div>
-      <TopBar />
+      <TopBar
+        selected={selected}
+        setSelected={setSelected}
+        deleteItem={deleteItem} />
       <Toolbar />
       <List>
         {items.map(item => (
@@ -52,7 +50,7 @@ const ListCard = () => {
               color="primary"/>
             <span style={{flex: 1}}>{item}</span>
             <IconButton>
-                <ClearIcon onClick={() => clearItem(item)} />
+                <ClearIcon onClick={() => deleteItem(item)} />
             </IconButton>
           </ListItem>
         ))}
