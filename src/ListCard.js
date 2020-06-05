@@ -6,7 +6,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import "./ListCard.css";
 import TopBar from "./TopBar";
 
-const ListCard = ({items, setItems}) => {
+const ListCard = ({items, setItems, setShowingAddItem}) => {
   const [selected, setSelected] = useState([]);
 
   const handleCheck = item => {
@@ -39,7 +39,8 @@ const ListCard = ({items, setItems}) => {
       <TopBar
         selected={selected}
         setSelected={setSelected}
-        deleteItem={deleteItem} />
+        deleteItem={deleteItem}
+        setShowingAddItem={setShowingAddItem} />
       <Toolbar />
       <List>
         {items.map(item => (
