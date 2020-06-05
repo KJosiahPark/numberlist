@@ -50,7 +50,7 @@ const ListCard = ({items, setItems, setShowingAddItem}) => {
               onChange={() => handleCheck(item)}
               color="primary"/>
             <span style={{flex: 1}}>{item}</span>
-            <IconButton>
+            <IconButton style={{display: "auto"}}>
                 <ClearIcon onClick={() => deleteItem(item)} />
             </IconButton>
           </ListItem>
