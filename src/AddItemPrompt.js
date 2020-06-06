@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -9,6 +9,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 
 const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
+  const [inputErr, setInputErr] = useState(false);
+  const [errText, setErrText] = useState("");
   const inputRef = useRef();
 
   const onSubmit = () => {
@@ -16,19 +18,34 @@ const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
     try {
       enteredNum = Number.parseInt(inputRef.current.value);
     } catch (error) {
-      console.log("input is not a number");
+      setInputErr(true);  
+      setErrText("input is not a number");
+      console.log("HERE");
+      return 0;
     }
-
-    if (enteredNum >= 0 && enteredNum <= 9999) {
-      const i = items.indexOf(enteredNum);
-      if (i === -1) { // if enteredNum is not in items
-        setItems(oldItems => [...oldItems, enteredNum]);
-        // sortListByGivenFilter()
+    console.log(enteredNum);
+    if (!Number.isNaN(enteredNum)) {
+      if (enteredNum >= 0 && enteredNum <= 9999) {
+        const i = items.indexOf(enteredNum);
+        if (i === -1) { // if enteredNum is not in items
+          setItems(oldItems => [...oldItems, enteredNum]);
+          // sortListByGivenFilter()
+          setInputErr(false);
+          setErrText("");
+          setShowing(false);
+        } else {
+          setInputErr(true);
+          setErrText("entered number is already in list");
+        }
       } else {
-        console.log("entered number is already in list");
+        setInputErr(true);
+        setErrText("entered number is not between 1 and 9999");
       }
     } else {
-      console.log("entered number is not between 1 and 9999");
+      setInputErr(true);  
+      setErrText("input is not a number");
+      console.log("HERE");
+      return 0;
     }
   }
 
@@ -40,18 +57,26 @@ const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
         <DialogContentText>
           A number can be between 0 and 9999
         </DialogContentText>
-        <TextField inputRef={inputRef} autoFocus/>
+        <TextField 
+        autoFocus
+        inputRef={inputRef} 
+        error={inputErr}
+        helperText={errText}
+        />
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={() => setShowing(false)}
+          onClick={() => {
+            setShowing(false);
+            setInputErr(false);
+            setErrText("");
+          }}
           color="primary">
           Cancel
         </Button>
         <Button
           onClick={() => {
             onSubmit();
-            setShowing(false);
           }}
           color="primary">
           Submit
