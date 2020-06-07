@@ -1,12 +1,30 @@
 import React, { useState } from "react";
 
 import { Toolbar, List, ListItem, Checkbox, IconButton } from "@material-ui/core";
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ClearIcon from '@material-ui/icons/Clear';
 
-import "./ListCard.css";
+import { makeStyles } from '@material-ui/core/styles';
+
 import TopBar from "./TopBar";
 
+const useStyles = makeStyles({
+  listItemDisplay: {
+    "&:hover + $deleteItemButton": {
+      display: "block",
+    }
+  },
+  deleteItemButton: {
+    display: "none",
+    "&:hover": {
+      display: "block",
+    }
+  },
+});
+
 const ListCard = ({items, setItems, setShowingAddItem}) => {
+  const classes = useStyles();
+
   const [selected, setSelected] = useState([]);
 
   const handleCheck = item => {
@@ -44,15 +62,20 @@ const ListCard = ({items, setItems, setShowingAddItem}) => {
       <Toolbar />
       <List>
         {items.map(item => (
-          <ListItem key={item} divider>
+          <ListItem
+            key={item}
+            className={classes.listItemDisplay}
+            divider>
             <Checkbox
               checked={selected.includes(item)}
               onChange={() => handleCheck(item)}
               color="primary"/>
-            <span style={{flex: 1}}>{item}</span>
-            <IconButton style={{display: "auto"}}>
-                <ClearIcon onClick={() => deleteItem(item)} />
-            </IconButton>
+            <span>{item}</span>
+            <ListItemSecondaryAction className={classes.deleteItemButton}>
+              <IconButton>
+                  <ClearIcon onClick={() => deleteItem(item)} />
+              </IconButton>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
