@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { AppBar, Toolbar, IconButton, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from "@material-ui/core";
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import SortIcon from "@material-ui/icons/Sort";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 
-const TopBar = ({selected, setSelected, deleteItem, setShowingAddItem}) => {
+const TopBar = ({setItems, selected, setSelected, deleteItem, setShowingAddItem}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const sortAsc = () => {
+    setItems(oldList => {
+      oldList.sort((a, b) => a - b);
+      return [...oldList];
+    })
+  }
+
+  const sortDec = () => {
+    setItems(oldList => {
+      oldList.sort((a, b) => b - a);
+      return [...oldList];
+    })
+  }
 
   const clearSelected = () => {
     setSelected([]);
@@ -30,12 +53,29 @@ const TopBar = ({selected, setSelected, deleteItem, setShowingAddItem}) => {
         {hasSelections && 
         <IconButton
           color="inherit"
-          onClick={clearSelected} >
+          onClick={clearSelected}>
           <IndeterminateCheckBoxIcon />
         </IconButton>}
-        <IconButton color="inherit">
+        <IconButton
+          color="inherit"
+          onClick={handleClick}>
           <SortIcon />
         </IconButton>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}>
+          <MenuItem onClick={() => {
+            sortAsc();
+            handleClose();
+          }}>Ascending</MenuItem>
+          <MenuItem onClick={() => {
+            sortDec();
+            handleClose();
+          }}>Descending</MenuItem>
+        </Menu>
         <IconButton
           color="inherit"
           onClick={deleteSelected}

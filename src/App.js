@@ -18,8 +18,8 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ListCard items={items} setItems={setItems} setShowingAddItem={setShowingAddItem}/>
-      <AddItemPrompt showing={showingAddItem} setShowing={setShowingAddItem} items={items} setItems={setItems}/>
+      <ListCard items={items} setItems={setItems} setShowingAddItem={setShowingAddItem} />
+      <AddItemPrompt showing={showingAddItem} setShowing={setShowingAddItem} items={items} setItems={setItems} />
     </ThemeProvider>
   )
 };

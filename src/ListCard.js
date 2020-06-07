@@ -55,6 +55,7 @@ const ListCard = ({items, setItems, setShowingAddItem}) => {
   return (
     <div>
       <TopBar
+        setItems={setItems}
         selected={selected}
         setSelected={setSelected}
         deleteItem={deleteItem}
