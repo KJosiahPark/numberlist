@@ -19,23 +19,27 @@ const TopBar = ({selected, setSelected, deleteItem, setShowingAddItem}) => {
     clearSelected();
   }
 
+  const hasSelections = !(selected.length === 0);
+
   return (
     <AppBar position="fixed">
       <Toolbar>
         <Typography variant="h6" style={{flex: 1}}>
-          Nombres ({selected.length})
+          Nombres {hasSelections && `(${selected.length})`}
         </Typography>
+        {hasSelections && 
         <IconButton
           color="inherit"
           onClick={clearSelected} >
           <IndeterminateCheckBoxIcon />
-        </IconButton>
+        </IconButton>}
         <IconButton color="inherit">
           <SortIcon />
         </IconButton>
         <IconButton
           color="inherit"
-          onClick={deleteSelected} >
+          onClick={deleteSelected}
+          disabled={!hasSelections}>
           <DeleteIcon />
         </IconButton>
         <IconButton
