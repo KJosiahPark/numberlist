@@ -11,7 +11,7 @@ import theme from "./theme";
 
 const App = () => {
   const [items, setItems] = useState(() =>
-    unfold((n) => (n > 40 ? false : [n, n + 1]), 0)
+    unfold((n) => (n > 100 ? false : [n, n + 1]), 0)
   );
   const [showingAddItem, setShowingAddItem] = useState(false);
 
