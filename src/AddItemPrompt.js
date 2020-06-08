@@ -39,7 +39,7 @@ const AddItemPrompt = ({ showing, setShowing, items, setItems }) => {
         }
       } else {
         setInputErr(true);
-        setErrText("entered number is not between 1 and 9999");
+        setErrText("entered number is not between 0 and 9999");
       }
     } else {
       setInputErr(true);  
